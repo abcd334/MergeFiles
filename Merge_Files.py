@@ -13,8 +13,7 @@ files = [f for f in os.listdir(folder_path) if f.endswith('.xlsx') or f.endswith
 
 # 新增合併檔
 output_file = 'merged_data.xlsx'
-with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
-    writer.book = writer.book
+with pd.ExcelWriter(output_file, engine='openpyxl', mode='w') as writer:
 
     for file in files:
         file_path = os.path.join(folder_path, file)
@@ -25,11 +24,10 @@ with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
 
             if sheet_name in writer.sheets:
                 # 將資料往下新增
-                startrow = writer.sheets[sheet_name].max_row
-                data.to_excel(writer, sheet_name=sheet_name, index=False, header=False, startrow=startrow)
+                start_row = writer.sheets[sheet_name].max_row
+                data.to_excel(writer, sheet_name=sheet_name, index=False, header=False, startrow=start_row)
             else:
                 # 新增工作頁
                 data.to_excel(writer, sheet_name=sheet_name, index=False)
 
-print("合併完成，已儲存為merged_data.xlsx")
-
+#print("合併完成，已儲存為merged_data.xlsx")
